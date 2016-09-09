@@ -35,7 +35,7 @@ public class FirstAutomationTest {
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "https://192.168.199.247:3002/1/#/rs/login";
+        baseUrl = "https://123.207.122.202:3002/1/#/rs/login";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
