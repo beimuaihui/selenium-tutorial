@@ -35,7 +35,7 @@ public class FirstAutomationTest {
     @Before
     public void setUp() throws Exception {
         driver = new FirefoxDriver();
-        baseUrl = "https://123.207.122.202:3002/1/#/rs/login";
+            baseUrl = "https://123.207.122.202:3002/1/#/rs/login";
         driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
     }
 
@@ -50,21 +50,28 @@ public class FirstAutomationTest {
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
         driver.findElement(By.xpath("//li[@ui-sref=\"app-rs.profile.newrefer\"]")).click();
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
-        driver.findElement(By.xpath("//input[@type='email']")).clear();
-        driver.findElement(By.xpath("//input[@type='email']")).sendKeys("Beimu QQ");
-        driver.findElement(By.xpath("//input[@type='email']")).clear();
-        driver.findElement(By.xpath("//input[@type='email']")).sendKeys("beimuaihui@gmail.com");
-        driver.findElement(By.xpath("//input[@type='text']")).clear();
-        driver.findElement(By.xpath("//input[@type='text']")).sendKeys("Beimu QQ");
+
+        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).clear();
+        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).sendKeys("beimuaihui@gmail.com");
+        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerName']")).clear();
+        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerName']")).sendKeys("Beimu Bob");
+        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerPhone']")).sendKeys("0412345678");
+        //input[@ng-model="theReferal.customerPhone"]
         driver.findElement(By.xpath("//div[contains(@class, 'btn-next')]")).click();
-        driver.findElement(By.xpath("//div/span")).click();
-        driver.findElement(By.cssSelector("#ui-select-choices-row-4-1 > a.ui-select-choices-row-inner")).click();
-        driver.findElement(By.xpath("//div[2]/div[2]/div[2]")).click();
-        driver.findElement(By.xpath("(//input[@type='checkbox'])[25]")).click();
-        driver.findElement(By.xpath("//div[7]/div/div/div[2]/div/div/div/div[2]/div/label")).click();
-        driver.findElement(By.xpath("//button[2]")).click();
+        driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//span[@ng-click='$select.activate()']")).click();
+        driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//input")).sendKeys("frimann2test@gmail.com");
+        driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverName']")).sendKeys("Test Bob");
+        driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverPhone']")).sendKeys("0412987654");
+
+
+        driver.findElement(By.xpath("//div[text()='Refer']")).click();
+        driver.findElement(By.xpath("//input[@ng-model='isAgree']")).click();
+        driver.findElement(By.xpath("//button[@ng-disabled='!isAgree']")).click();
+        //driver.findElement(By.xpath("//button[2]")).click();
         driver.findElement(By.cssSelector("button.confirm")).click();
-        driver.findElement(By.xpath("//li[@ui-sref=\"app-rs.profile.info\"]")).click();
+        driver.findElement(By.xpath("//li[@ui-sref='app-rs.profile.info']")).click();
+        driver.findElement(By.xpath("//button[@ng-click='logout()']")).click();
+
     }
 
     @After
