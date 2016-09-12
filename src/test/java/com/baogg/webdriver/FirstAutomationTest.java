@@ -60,7 +60,7 @@ public class FirstAutomationTest {
         String s = (String) ((JavascriptExecutor) driver).executeScript("return navigator.userAgent;");
         System.out.println("Browser name : " + s);
 
-        baseUrl = "https://localhost:3002/1/#/rs/login";
+        baseUrl = "https://192.168.199.247:3002/1/#/rs/login"; //123.207.122.202
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
@@ -149,7 +149,7 @@ public class FirstAutomationTest {
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
         waitSweetAlertHide();
 
-        Thread.sleep(3000);
+        //Thread.sleep(3000);
         findDynamicElement(By.cssSelector("#block_status_Application_Submitted > div.rs-timeline-content > div.rs-subject"),10000).click();
         waitSweetAlertShow();
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
@@ -182,6 +182,19 @@ public class FirstAutomationTest {
         waitSweetAlertShow();
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
         waitSweetAlertHide();
+
+
+
+        driver.findElement(By.xpath("//*[@id=\"block_status_Settlement\"]/div[2]/div[2]/button[7]")).click();
+        findDynamicElement(By.xpath("//button[@type='submit']"),10000).click();
+        driver.findElement(By.xpath("(//input[@type='text'])[6]")).clear();
+        driver.findElement(By.xpath("(//input[@type='text'])[6]")).sendKeys("123456789");
+        driver.findElement(By.xpath("(//input[@type='text'])[12]")).clear();
+        driver.findElement(By.xpath("(//input[@type='text'])[12]")).sendKeys("100000");
+        findDynamicElement(By.xpath("//div[@type='submit']"),10000).click();
+        findDynamicElement(By.xpath("(//div[@type='submit'])[2]"),10000).click();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+
     }
 
     public void waitSweetAlertHide() throws InterruptedException {
