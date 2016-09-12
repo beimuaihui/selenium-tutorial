@@ -23,6 +23,7 @@ import static org.hamcrest.CoreMatchers.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
@@ -50,9 +51,18 @@ public class FirstAutomationTest {
         capabilities.setCapability(ChromeOptions.CAPABILITY, options);
         */
 
-        driver = new FirefoxDriver();
+        FirefoxProfile profile = new FirefoxProfile();
+        //profile.addAdditionalPreference("general.useragent.override", "my_selenium_browser");
+        profile.setPreference("general.useragent.override","my_selenium_browser");
+        driver = new FirefoxDriver(profile);
+
+
+        String s = (String) ((JavascriptExecutor) driver).executeScript("return navigator.userAgent;");
+        System.out.println("Browser name : " + s);
+
         baseUrl = "https://localhost:3002/1/#/rs/login";
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        driver.manage().window().maximize();
     }
 
     @Test
@@ -75,7 +85,7 @@ public class FirstAutomationTest {
         //input[@ng-model="theReferal.customerPhone"]
         driver.findElement(By.xpath("//div[contains(@class, 'btn-next')]")).click();
         driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//span[@ng-click='$select.activate()']")).click();
-        driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//input")).sendKeys("ylb2016@126.com");
+        driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//input")).sendKeys("frimann2test@gmail.com");
         driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverName']")).sendKeys("Test Bob");
         driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverPhone']")).sendKeys("0412987654");
 
@@ -83,14 +93,16 @@ public class FirstAutomationTest {
         driver.findElement(By.xpath("//div[text()='Refer']")).click();
         driver.findElement(By.xpath("//input[@ng-model='isAgree']")).click();
         driver.findElement(By.xpath("//button[@ng-disabled='!isAgree']")).click();
+        Thread.sleep(1000);
         //driver.findElement(By.xpath("//button[2]")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
+        Thread.sleep(1000);
 
 
 
-        driver.findElement(By.xpath("//li[@ui-sref='app-rs.profile.info']")).click();
-        driver.findElement(By.xpath("//button[@ng-click='logout()']")).click();
+        findDynamicElement(By.xpath("//li[@ui-sref='app-rs.profile.info']"),10).click();
+        findDynamicElement(By.xpath("//button[@ng-click='logout()']"),10).click();
 
 
     }
@@ -106,77 +118,101 @@ public class FirstAutomationTest {
         driver.findElement(By.id("pwd")).sendKeys("123456");
         driver.findElement(By.id("btnLogin")).click();
 
-        Thread.sleep(5000);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        /*Thread.sleep(5000);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);*/
 
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//table[@id=\"receiverDashboard\"]/tbody/tr")));
-        driver.findElement(By.xpath("//table[@id=\"receiverDashboard\"]/tbody/tr")).click();
-
-        Thread.sleep(5000);
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject")));
-
-        driver.findElement(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-
-        waitSweetAlert();
-        Thread.sleep(5000);
-
-        driver.findElement(By.cssSelector("#block_status_Appointment_Made_or_Lead_Closed > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
-
-        driver.findElement(By.cssSelector("#block_status_Appointment_Completed > div.rs-timeline-content > div.rs-subject")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
+        findDynamicElement(By.xpath("//table[@id=\"receiverDashboard\"]/tbody/tr[1]"),10000).click();
 
 
-        driver.findElement(By.cssSelector("#block_status_Application_Received > div.rs-timeline-content > div.rs-subject")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
+        /*Thread.sleep(5000);
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject")));*/
 
-        driver.findElement(By.cssSelector("#block_status_Application_Submitted > div.rs-timeline-content > div.rs-subject")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
+        findDynamicElement(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
 
-        driver.findElement(By.cssSelector("#block_status_Application_Conditional_Approval > div.rs-timeline-content > div.rs-subject")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
-
-        driver.findElement(By.cssSelector("#block_status_Valuation > div.rs-timeline-content > div.rs-subject")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
+        findDynamicElement(By.cssSelector("#block_status_Appointment_Made_or_Lead_Closed > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
 
 
-        driver.findElement(By.cssSelector("#block_status_Application_Formal_Approval > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding")).click();
+        findDynamicElement(By.cssSelector("#block_status_Appointment_Completed > div.rs-timeline-content > div.rs-subject"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
 
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
+
+        findDynamicElement(By.cssSelector("#block_status_Application_Received > div.rs-timeline-content > div.rs-subject"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
+
+        Thread.sleep(3000);
+        findDynamicElement(By.cssSelector("#block_status_Application_Submitted > div.rs-timeline-content > div.rs-subject"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
+
+        findDynamicElement(By.cssSelector("#block_status_Application_Conditional_Approval > div.rs-timeline-content > div.rs-subject"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
+
+        findDynamicElement(By.cssSelector("#block_status_Valuation > div.rs-timeline-content > div.rs-subject"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
 
 
-        driver.findElement(By.cssSelector("#block_status_Settlement_Booked > div.rs-timeline-content > div.rs-subject")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
-        Thread.sleep(5000);
+        findDynamicElement(By.cssSelector("#block_status_Application_Formal_Approval > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding"),10000).click();
 
-        driver.findElement(By.cssSelector("#block_status_Settlement > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding")).click();
-        driver.findElement(By.cssSelector("button.confirm")).click();
-        waitSweetAlert();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
+
+
+        findDynamicElement(By.cssSelector("#block_status_Settlement_Booked > div.rs-timeline-content > div.rs-subject"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
+
+        findDynamicElement(By.cssSelector("#block_status_Settlement > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding"),10000).click();
+        waitSweetAlertShow();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        waitSweetAlertHide();
     }
 
-    public void waitSweetAlert() {
+    public void waitSweetAlertHide() throws InterruptedException {
+        if(false) {
+            Thread.sleep(500);
+            By loadingImage = By.cssSelector(".sweet-overlay");
 
-        By loadingImage = By.cssSelector(".sweet-overlay");
+            WebDriverWait wait = new WebDriverWait(driver, 10);
 
-        WebDriverWait wait = new WebDriverWait(driver, 5);
+            wait.until(ExpectedConditions.invisibilityOfElementLocated(loadingImage));
+            Thread.sleep(500);
+        }
+    }
 
-        wait.until(ExpectedConditions.invisibilityOfElementLocated(loadingImage));
+    public void waitSweetAlertShow() throws InterruptedException {
+        if(false) {
+            Thread.sleep(500);
+            By loadingImage = By.cssSelector(".sweet-overlay");
+
+            WebDriverWait wait = new WebDriverWait(driver, 10);
+
+            wait.until(ExpectedConditions.visibilityOfElementLocated(loadingImage));
+            Thread.sleep(500);
+        }
+    }
+
+
+    public WebElement findDynamicElement(By by, int timeOut) throws InterruptedException {
+        Thread.sleep(500);
+        return (new WebDriverWait(driver,timeOut,500))
+                .until(ExpectedConditions.elementToBeClickable(by));
     }
 
     @After
