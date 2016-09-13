@@ -60,7 +60,7 @@ public class FirstAutomationTest {
         String s = (String) ((JavascriptExecutor) driver).executeScript("return navigator.userAgent;");
         System.out.println("Browser name : " + s);
 
-        baseUrl = "https://192.168.199.247:3002/1/#/rs/login"; //123.207.122.202
+        baseUrl = "https://localhost:3002/1/#/rs/login"; //123.207.122.202
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
@@ -72,9 +72,9 @@ public class FirstAutomationTest {
         driver.findElement(By.id("email")).sendKeys("22376415@qq.com");
         driver.findElement(By.id("pwd")).clear();
         driver.findElement(By.id("pwd")).sendKeys("123456");
-        driver.findElement(By.id("btnLogin")).click();
+        findDynamicElement(By.id("btnLogin")).click();
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
-        driver.findElement(By.xpath("//li[@ui-sref=\"app-rs.profile.newrefer\"]")).click();
+        findDynamicElement(By.xpath("//li[@ui-sref=\"app-rs.profile.newrefer\"]")).click();
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
 
         driver.findElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).clear();
@@ -83,17 +83,18 @@ public class FirstAutomationTest {
         driver.findElement(By.xpath("//input[@ng-model='theReferal.customerName']")).sendKeys("Beimu Bob");
         driver.findElement(By.xpath("//input[@ng-model='theReferal.customerPhone']")).sendKeys("0412345678");
         //input[@ng-model="theReferal.customerPhone"]
-        driver.findElement(By.xpath("//div[contains(@class, 'btn-next')]")).click();
-        driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//span[@ng-click='$select.activate()']")).click();
+        findDynamicElement(By.xpath("//div[contains(@class, 'btn-next')]")).click();
+        findDynamicElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//span[@ng-click='$select.activate()']")).click();
         driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//input")).sendKeys("frimann2test@gmail.com");
         driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverName']")).sendKeys("Test Bob");
         driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverPhone']")).sendKeys("0412987654");
 
 
-        driver.findElement(By.xpath("//div[text()='Refer']")).click();
-        driver.findElement(By.xpath("//input[@ng-model='isAgree']")).click();
-        driver.findElement(By.xpath("//button[@ng-disabled='!isAgree']")).click();
+        findDynamicElement(By.xpath("//div[text()='Refer']")).click();
         Thread.sleep(1000);
+        driver.findElement(By.xpath("//input[@ng-model='isAgree']")).click();
+        findDynamicElement(By.xpath("//button[@ng-disabled='!isAgree']")).click();
+
         //driver.findElement(By.xpath("//button[2]")).click();
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
         waitSweetAlertHide();
@@ -116,7 +117,7 @@ public class FirstAutomationTest {
         driver.findElement(By.id("email")).sendKeys("frimann2test@gmail.com");
         driver.findElement(By.id("pwd")).clear();
         driver.findElement(By.id("pwd")).sendKeys("123456");
-        driver.findElement(By.id("btnLogin")).click();
+        findDynamicElement(By.id("btnLogin")).click();
 
         /*Thread.sleep(5000);
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);*/
@@ -185,7 +186,7 @@ public class FirstAutomationTest {
 
 
 
-        driver.findElement(By.xpath("//*[@id=\"block_status_Settlement\"]/div[2]/div[2]/button[7]")).click();
+        findDynamicElement(By.xpath("//*[@id=\"block_status_Settlement\"]/div[2]/div[2]/button[7]")).click();
         findDynamicElement(By.xpath("//button[@type='submit']"),10000).click();
         driver.findElement(By.xpath("(//input[@type='text'])[6]")).clear();
         driver.findElement(By.xpath("(//input[@type='text'])[6]")).sendKeys("123456789");
@@ -226,6 +227,17 @@ public class FirstAutomationTest {
         Thread.sleep(500);
         return (new WebDriverWait(driver,timeOut,500))
                 .until(ExpectedConditions.elementToBeClickable(by));
+    }
+
+
+    public WebElement findDynamicElement(By by) throws InterruptedException {
+        return this.findDynamicElement(by,10);
+    }
+
+
+    public WebElement findVisibleElement(By by) throws InterruptedException {
+        return (new WebDriverWait(driver,20,500))
+                .until(ExpectedConditions.visibilityOfElementLocated(by));
     }
 
     @After
