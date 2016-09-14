@@ -3,30 +3,23 @@ package com.baogg.webdriver;
 //Info: When you write your code IntelliJ automatically adds required classes
 //Also you can select and add required classes by pressing ALT+Enter then select related class
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.*;
 
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 
 import org.openqa.selenium.*;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
@@ -43,52 +36,78 @@ public class FirstAutomationTest {
     @Before
     public void setUp() throws Exception {
 
-        /*
-        ChromeOptions options = new ChromeOptions();
-        options.setBinary("/usr/bin/google-chrome");
 
-        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
-        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
-        */
 
-        FirefoxProfile profile = new FirefoxProfile();
+        //ChromeOptions profile = new ChromeOptions();
         //profile.addAdditionalPreference("general.useragent.override", "my_selenium_browser");
-        profile.setPreference("general.useragent.override","my_selenium_browser");
-        driver = new FirefoxDriver(profile);
+        //profile.setBinary("/usr/bin/google-chrome");
+        //profile.setPreference("general.useragent.override","my_selenium_browser");
+        //profile.addArgument("--user-agent=" + "my_selenium_browser");
+        //profile.addArguments();
+
+
+        //System.setProperty("webdriver.chrome.driver", "/home/bob/IdeaProjects/selenium-tutorial/out/artifacts/selenium_tutorial_jar/chromedriver");
+        /**
+         * Download chrome drive from http://chromedriver.storage.googleapis.com/index.html
+         * then execute java -jar ./selenium-tutorial.jar -Dwebdriver.chrome.driver=./chromedriver
+         */
+        DesiredCapabilities capabilities = DesiredCapabilities.chrome();
+        ChromeOptions options = new ChromeOptions();
+        //options.AddArgument("--start-maximized");
+        //chromeOptions.AddExcludedArgument("ignore-certificate-errors");
+        options.addArguments("--user-agent=my_selenium_browser");
+        //capabilities.setCapability("chrome.binary", "/home/bob/IdeaProjects/selenium-tutorial/out/artifacts/selenium_tutorial_jar/chromedriver");
+        capabilities.setCapability(ChromeOptions.CAPABILITY, options);
+        driver = new ChromeDriver(capabilities);
+
+
+
+        //driver = new FirefoxDriver(profile); //FirefoxDriver
 
 
         String s = (String) ((JavascriptExecutor) driver).executeScript("return navigator.userAgent;");
         System.out.println("Browser name : " + s);
 
-        baseUrl = "https://localhost:3002/1/#/rs/login"; //123.207.122.202
-        driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+        baseUrl = "https://123.207.122.202:3002"; //192.168.199.247
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
 
     @Test
     public void testReferralSmartASender() throws Exception {
-        driver.get(baseUrl + "/1/#/rs/login");
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys("22376415@qq.com");
+        driver.get(baseUrl + "/");
+        //JavascriptExecutor js = ((JavascriptExecutor) driver);
+        //js.executeScript("window.scrollTo(0, document.body.scrollHeight)");
+
+
+        /*((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", findDynamicElement(By.xpath("(//a[contains(text(),'Refer Now')])[2]")));
+        */
+        Thread.sleep(10000);
+
+        findDynamicElement(By.xpath("(//a[contains(text(),'Refer Now')])[1]")).click();
+        findVisibleElement(By.id("email")).clear();
+        findVisibleElement(By.id("email")).sendKeys("22376415@qq.com");
         driver.findElement(By.id("pwd")).clear();
-        driver.findElement(By.id("pwd")).sendKeys("123456");
+        findVisibleElement(By.id("pwd")).sendKeys("123456");
         findDynamicElement(By.id("btnLogin")).click();
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
         findDynamicElement(By.xpath("//li[@ui-sref=\"app-rs.profile.newrefer\"]")).click();
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
 
-        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).clear();
+
+        findVisibleElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).clear();
         driver.findElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).sendKeys("beimuaihui@gmail.com");
-        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerName']")).clear();
+        findVisibleElement(By.xpath("//input[@ng-model='theReferal.customerName']")).clear();
         driver.findElement(By.xpath("//input[@ng-model='theReferal.customerName']")).sendKeys("Beimu Bob");
-        driver.findElement(By.xpath("//input[@ng-model='theReferal.customerPhone']")).sendKeys("0412345678");
+        findVisibleElement(By.xpath("//input[@ng-model='theReferal.customerPhone']")).sendKeys("0412345678");
         //input[@ng-model="theReferal.customerPhone"]
         findDynamicElement(By.xpath("//div[contains(@class, 'btn-next')]")).click();
         findDynamicElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//span[@ng-click='$select.activate()']")).click();
-        driver.findElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//input")).sendKeys("frimann2test@gmail.com");
-        driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverName']")).sendKeys("Test Bob");
-        driver.findElement(By.xpath("//input[@ng-model='theReferal.newReceiverPhone']")).sendKeys("0412987654");
-
+        findVisibleElement(By.xpath("//div[@ng-model='theReferal.rePartner.selected']//input")).sendKeys("frimann2test@gmail.com");
+        findVisibleElement(By.xpath("//input[@ng-model='theReferal.newReceiverCompany']")).click();
+        findVisibleElement(By.xpath("//input[@ng-model='theReferal.newReceiverName']")).sendKeys("Test Bob");
+        findVisibleElement(By.xpath("//input[@ng-model='theReferal.newReceiverPhone']")).sendKeys("0412987654");
+        findVisibleElement(By.xpath("//input[@ng-model='theReferal.newReceiverCompany']")).sendKeys("Abacus");
 
         findDynamicElement(By.xpath("//div[text()='Refer']")).click();
         Thread.sleep(1000);
@@ -98,25 +117,26 @@ public class FirstAutomationTest {
         //driver.findElement(By.xpath("//button[2]")).click();
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
         waitSweetAlertHide();
-        Thread.sleep(1000);
+        Thread.sleep(5000);
 
 
 
         findDynamicElement(By.xpath("//li[@ui-sref='app-rs.profile.info']"),10).click();
         findDynamicElement(By.xpath("//button[@ng-click='logout()']"),10).click();
-
+/*
 
     }
 
 
     @Test
-    public void testReferralSmartBReceiver() throws Exception {
-
-        driver.get(baseUrl + "/1/#/rs/login");
-        driver.findElement(By.id("email")).clear();
-        driver.findElement(By.id("email")).sendKeys("frimann2test@gmail.com");
+    public void testReferralSmartBReceiver() throws Exception {*/
+        Thread.sleep(5000);
+        //driver.get(baseUrl + "/1/#/rs/login");
+        //driver.navigate().to(baseUrl + "/1/#/rs/login");
+        findVisibleElement(By.id("email")).clear();
+        findVisibleElement(By.id("email")).sendKeys("frimann2test@gmail.com");
         driver.findElement(By.id("pwd")).clear();
-        driver.findElement(By.id("pwd")).sendKeys("123456");
+        findVisibleElement(By.id("pwd")).sendKeys("123456");
         findDynamicElement(By.id("btnLogin")).click();
 
         /*Thread.sleep(5000);
@@ -130,12 +150,16 @@ public class FirstAutomationTest {
 
         findDynamicElement(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject"),10000).click();
         waitSweetAlertShow();
+
+        findVisibleElement(By.cssSelector(".sweet-alert > fieldset > input[type='text']")).clear();
+        findVisibleElement(By.cssSelector(".sweet-alert > fieldset > input[type='text']")).sendKeys("I have contacted client at yesterday");
+
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
         waitSweetAlertHide();
 
         findDynamicElement(By.cssSelector("#block_status_Appointment_Made_or_Lead_Closed > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding"),10000).click();
         waitSweetAlertShow();
-        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+        findDynamicElement(By.cssSelector(".sweet-alert button.confirm"),10000).click();
         waitSweetAlertHide();
 
 
@@ -196,7 +220,10 @@ public class FirstAutomationTest {
         findDynamicElement(By.xpath("(//div[@type='submit'])[2]"),10000).click();
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
 
+        Thread.sleep(10000);  // Let the user actually see something!
+        driver.quit();
     }
+
 
     public void waitSweetAlertHide() throws InterruptedException {
         if(false) {
@@ -224,8 +251,8 @@ public class FirstAutomationTest {
 
 
     public WebElement findDynamicElement(By by, int timeOut) throws InterruptedException {
-        Thread.sleep(500);
-        return (new WebDriverWait(driver,timeOut,500))
+        Thread.sleep(1000);
+        return (new WebDriverWait(driver,timeOut,1000))
                 .until(ExpectedConditions.elementToBeClickable(by));
     }
 
@@ -236,8 +263,12 @@ public class FirstAutomationTest {
 
 
     public WebElement findVisibleElement(By by) throws InterruptedException {
-        return (new WebDriverWait(driver,20,500))
+
+        WebElement ele =  (new WebDriverWait(driver,20,1500))
                 .until(ExpectedConditions.visibilityOfElementLocated(by));
+        Thread.sleep(1600);
+        return ele;
+
     }
 
     @After
