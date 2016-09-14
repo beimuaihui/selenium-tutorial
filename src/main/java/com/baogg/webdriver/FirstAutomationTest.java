@@ -45,8 +45,9 @@ public class FirstAutomationTest {
         //profile.addArgument("--user-agent=" + "my_selenium_browser");
         //profile.addArguments();
 
-
-        //System.setProperty("webdriver.chrome.driver", "/home/bob/IdeaProjects/selenium-tutorial/out/artifacts/selenium_tutorial_jar/chromedriver");
+        if(System.getProperty("webdriver.chrome.driver") == null || System.getProperty("webdriver.chrome.driver").length() == 0) {
+            System.setProperty("webdriver.chrome.driver", "/home/bob/IdeaProjects/selenium-tutorial/out/artifacts/selenium_tutorial_jar/chromedriver");
+        }
         /**
          * Download chrome drive from http://chromedriver.storage.googleapis.com/index.html
          * then execute java -jar ./selenium-tutorial.jar -Dwebdriver.chrome.driver=./chromedriver
