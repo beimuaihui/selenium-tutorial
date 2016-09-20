@@ -20,6 +20,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxProfile;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 /**
@@ -69,8 +70,8 @@ public class FirstAutomationTest {
         String s = (String) ((JavascriptExecutor) driver).executeScript("return navigator.userAgent;");
         System.out.println("Browser name : " + s);
 
-        baseUrl = "https://123.207.122.202:3002"; //192.168.199.247
-        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
+        baseUrl = "https://192.168.199.247:3002"; //123.207.122.202
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
 
@@ -83,7 +84,7 @@ public class FirstAutomationTest {
 
         /*((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", findDynamicElement(By.xpath("(//a[contains(text(),'Refer Now')])[2]")));
         */
-        Thread.sleep(10000);
+        //Thread.sleep(1000);
 
         findDynamicElement(By.xpath("(//a[contains(text(),'Refer Now')])[1]")).click();
         findVisibleElement(By.id("email")).clear();
@@ -94,6 +95,11 @@ public class FirstAutomationTest {
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
         findDynamicElement(By.xpath("//li[@ui-sref=\"app-rs.profile.newrefer\"]")).click();
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
+
+        WebElement mySelectElm = findDynamicElement(By.xpath("//select[@ng-model='theReferal.customerWant']"));
+        Select mySelect= new Select(mySelectElm);
+        //mySelect.selectByVisibleText("Option");
+        mySelect.selectByValue("E-Store Carrot Point");
 
 
         findVisibleElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).clear();
@@ -118,36 +124,35 @@ public class FirstAutomationTest {
         //driver.findElement(By.xpath("//button[2]")).click();
         findDynamicElement(By.cssSelector("button.confirm"),10000).click();
         waitSweetAlertHide();
-        Thread.sleep(5000);
+        Thread.sleep(1000);
 
 
 
         findDynamicElement(By.xpath("//li[@ui-sref='app-rs.profile.info']"),10).click();
         findDynamicElement(By.xpath("//button[@ng-click='logout()']"),10).click();
-/*
 
     }
 
-
+/*
     @Test
-    public void testReferralSmartBReceiver() throws Exception {*/
+    public void testReferralSmartBReceiver() throws Exception {
         Thread.sleep(5000);
-        //driver.get(baseUrl + "/1/#/rs/login");
-        //driver.navigate().to(baseUrl + "/1/#/rs/login");
+        driver.get(baseUrl + "/1/#/rs/login");
+        driver.navigate().to(baseUrl + "/1/#/rs/login");
         findVisibleElement(By.id("email")).clear();
         findVisibleElement(By.id("email")).sendKeys("frimann2test@gmail.com");
         driver.findElement(By.id("pwd")).clear();
         findVisibleElement(By.id("pwd")).sendKeys("123456");
         findDynamicElement(By.id("btnLogin")).click();
 
-        /*Thread.sleep(5000);
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);*/
+        *//*Thread.sleep(5000);
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);*//*
 
         findDynamicElement(By.xpath("//table[@id=\"receiverDashboard\"]/tbody/tr[1]"),10000).click();
 
 
-        /*Thread.sleep(5000);
-        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject")));*/
+        *//*Thread.sleep(5000);
+        (new WebDriverWait(driver, 10)).until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject")));*//*
 
         findDynamicElement(By.cssSelector("#block_status_Contacted_Client > div.rs-timeline-content > div.rs-subject"),10000).click();
         waitSweetAlertShow();
@@ -211,7 +216,7 @@ public class FirstAutomationTest {
 
 
 
-        findDynamicElement(By.xpath("//*[@id=\"block_status_Settlement\"]/div[2]/div[2]/button[7]")).click();
+        findDynamicElement(By.xpath("/*//*[@id=\"block_status_Settlement\"]/div[2]/div[2]/button[7]")).click();
         findDynamicElement(By.xpath("//button[@type='submit']"),10000).click();
         driver.findElement(By.xpath("(//input[@type='text'])[6]")).clear();
         driver.findElement(By.xpath("(//input[@type='text'])[6]")).sendKeys("123456789");
@@ -223,6 +228,86 @@ public class FirstAutomationTest {
 
         Thread.sleep(10000);  // Let the user actually see something!
         driver.quit();
+    }*/
+
+    @Test
+    public void testReferralSmartBReceiverAll() throws Exception {
+        //Thread.sleep(5000);
+        driver.get(baseUrl + "/1/#/rs/login");
+        //driver.navigate().to(baseUrl + "/1/#/rs/login");
+        findVisibleElement(By.id("email")).clear();
+        findVisibleElement(By.id("email")).sendKeys("frimann2test@gmail.com");
+        driver.findElement(By.id("pwd")).clear();
+        findVisibleElement(By.id("pwd")).sendKeys("123456");
+        findDynamicElement(By.id("btnLogin")).click();
+
+        /*Thread.sleep(5000);*/
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        findDynamicElement(By.xpath("//table[@id=\"receiverDashboard\"]/tbody/tr[1]"), 10000).click();
+
+        Thread.sleep(2000);
+        try {
+            while (true) {
+                System.out.println("begin change status");
+                //driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
+                findDynamicElement(By.cssSelector(".rs-next-step > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding"), 10).click();
+                waitSweetAlertShow();
+                findDynamicElement(By.cssSelector("button.confirm"), 10000).click();
+                waitSweetAlertHide();
+                //driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
+                System.out.println("end change status");
+
+                System.out.println(driver.findElements(By.cssSelector(".rs-next-step > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding")).size());
+            }
+        } catch (NoSuchElementException e) {
+            System.out.println("Not found change status");
+        }catch(Exception e){
+            System.out.println(e.getMessage());
+            System.out.println("System error");
+        }
+
+
+        System.out.println("begin settlement");
+        findDynamicElement(By.cssSelector(".rs-current-step > div.rs-timeline-content > div.rs-button-panel > button:nth-child(7)")).click();
+        findDynamicElement(By.xpath("//button[@type='submit']"),10000).click();
+        driver.findElement(By.xpath("(//input[@type='text'])[6]")).clear();
+        driver.findElement(By.xpath("(//input[@type='text'])[6]")).sendKeys("123456789");
+        driver.findElement(By.xpath("(//input[@type='text'])[12]")).clear();
+        driver.findElement(By.xpath("(//input[@type='text'])[12]")).sendKeys("100000");
+        findDynamicElement(By.xpath("//div[@type='submit']"),10000).click();
+        findDynamicElement(By.xpath("(//div[@type='submit'])[2]"),10000).click();
+        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
+
+        Thread.sleep(2000);  // Let the user actually see something!
+        driver.quit();
+    }
+
+
+    @Test
+    public void testReferralSmartCSender() throws Exception {
+        //Thread.sleep(5000);
+        driver.get(baseUrl + "/1/#/rs/login");
+        //driver.navigate().to(baseUrl + "/1/#/rs/login");
+        findVisibleElement(By.id("email")).clear();
+        findVisibleElement(By.id("email")).sendKeys("22376415@qq.com");
+        driver.findElement(By.id("pwd")).clear();
+        findVisibleElement(By.id("pwd")).sendKeys("123456");
+        findDynamicElement(By.id("btnLogin")).click();
+
+        /*Thread.sleep(5000);*/
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+
+        findDynamicElement(By.xpath("//div[@class='row my-table-count-tab']/label[3]")).click();
+        findDynamicElement(By.xpath("//table[@id=\"senderDashboard\"]/tbody/tr[1]"), 10000).click();
+        //findDynamicElement(By.cssSelector("td.ng-binding > div.ng-binding")).click();
+        findDynamicElement(By.xpath("(//button[@type='button'])[65]")).click();
+        findDynamicElement(By.xpath("(//input[@type='text'])[3]")).clear();
+        findDynamicElement(By.xpath("(//input[@type='text'])[3]")).sendKeys("98765432101");
+        findDynamicElement(By.cssSelector("div.col-lg-10 > button.btn.my-btn-add")).click();
+        findDynamicElement(By.xpath("(//button[@type='submit'])[2]")).click();
+        findDynamicElement(By.cssSelector("button.confirm")).click();
+        Thread.sleep(2000);
     }
 
 
@@ -252,8 +337,9 @@ public class FirstAutomationTest {
 
 
     public WebElement findDynamicElement(By by, int timeOut) throws InterruptedException {
-        Thread.sleep(1000);
-        return (new WebDriverWait(driver,timeOut,1000))
+        driver.manage().timeouts().implicitlyWait(10, TimeUnit.MILLISECONDS);
+        Thread.sleep(300);
+        return (new WebDriverWait(driver,timeOut,300))
                 .until(ExpectedConditions.elementToBeClickable(by));
     }
 
@@ -265,9 +351,9 @@ public class FirstAutomationTest {
 
     public WebElement findVisibleElement(By by) throws InterruptedException {
 
-        WebElement ele =  (new WebDriverWait(driver,20,1500))
+        WebElement ele =  (new WebDriverWait(driver,20,300))
                 .until(ExpectedConditions.visibilityOfElementLocated(by));
-        Thread.sleep(1600);
+        //Thread.sleep(500);
         return ele;
 
     }
