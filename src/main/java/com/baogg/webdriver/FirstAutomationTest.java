@@ -242,7 +242,7 @@ public class FirstAutomationTest {
         findDynamicElement(By.id("btnLogin")).click();
 
         /*Thread.sleep(5000);*/
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         findDynamicElement(By.xpath("//table[@id=\"receiverDashboard\"]/tbody/tr[1]"), 10000).click();
 
@@ -251,14 +251,15 @@ public class FirstAutomationTest {
             while (true) {
                 System.out.println("begin change status");
                 //driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
-                findDynamicElement(By.cssSelector(".rs-next-step > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding"), 10).click();
+                findDynamicElement(By.cssSelector(".rs-next-step > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding")).click();
                 waitSweetAlertShow();
-                findDynamicElement(By.cssSelector("button.confirm"), 10000).click();
+                findDynamicElement(By.cssSelector("button.confirm")).click();
                 waitSweetAlertHide();
                 //driver.manage().timeouts().implicitlyWait(0, TimeUnit.MILLISECONDS);
                 System.out.println("end change status");
+                Thread.sleep(1000);
 
-                System.out.println(driver.findElements(By.cssSelector(".rs-next-step > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding")).size());
+                //System.out.println(driver.findElements(By.cssSelector(".rs-next-step > div.rs-timeline-content > div.rs-subject > p.smwidth.ng-binding")).size());
             }
         } catch (NoSuchElementException e) {
             System.out.println("Not found change status");
@@ -296,7 +297,7 @@ public class FirstAutomationTest {
         findDynamicElement(By.id("btnLogin")).click();
 
         /*Thread.sleep(5000);*/
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        //driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
         findDynamicElement(By.xpath("//div[@class='row my-table-count-tab']/label[3]")).click();
         findDynamicElement(By.xpath("//table[@id=\"senderDashboard\"]/tbody/tr[1]"), 10000).click();
@@ -337,9 +338,8 @@ public class FirstAutomationTest {
 
 
     public WebElement findDynamicElement(By by, int timeOut) throws InterruptedException {
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.MILLISECONDS);
         Thread.sleep(300);
-        return (new WebDriverWait(driver,timeOut,300))
+        return (new WebDriverWait(driver,timeOut,500))
                 .until(ExpectedConditions.elementToBeClickable(by));
     }
 
@@ -351,7 +351,7 @@ public class FirstAutomationTest {
 
     public WebElement findVisibleElement(By by) throws InterruptedException {
 
-        WebElement ele =  (new WebDriverWait(driver,20,300))
+        WebElement ele =  (new WebDriverWait(driver,20,500))
                 .until(ExpectedConditions.visibilityOfElementLocated(by));
         //Thread.sleep(500);
         return ele;
