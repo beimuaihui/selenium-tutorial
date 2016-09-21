@@ -71,7 +71,7 @@ public class FirstAutomationTest {
         System.out.println("Browser name : " + s);
 
         baseUrl = "https://192.168.199.247:3002"; //123.207.122.202
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(6, TimeUnit.SECONDS);
         driver.manage().window().maximize();
     }
 
@@ -96,10 +96,14 @@ public class FirstAutomationTest {
         findDynamicElement(By.xpath("//li[@ui-sref=\"app-rs.profile.newrefer\"]")).click();
         // ERROR: Caught exception [Error: Dom locators are not implemented yet!]
 
-        WebElement mySelectElm = findDynamicElement(By.xpath("//select[@ng-model='theReferal.customerWant']"));
+        /*WebElement mySelectElm = findDynamicElement(By.xpath("//select[@ng-model='theReferal.customerWant']"));
         Select mySelect= new Select(mySelectElm);
-        //mySelect.selectByVisibleText("Option");
-        mySelect.selectByValue("E-Store Carrot Point");
+        mySelect.selectByValue("E-Store Carrot Point");*/
+
+        findDynamicElement(By.xpath("//div[@ng-model='selCustomerWant.selected']//span[@ng-click='$select.activate()']")).click();
+        findVisibleElement(By.xpath("//div[@ng-model='selCustomerWant.selected']//input[1]")).sendKeys("E-Store Carrot Point");
+        findDynamicElement(By.xpath("//div[@ng-model='selCustomerWant.selected']//a[@class='ui-select-choices-row-inner']/span")).click();
+
 
 
         findVisibleElement(By.xpath("//input[@ng-model='theReferal.customerEmail']")).clear();
@@ -302,7 +306,9 @@ public class FirstAutomationTest {
         findDynamicElement(By.xpath("//div[@class='row my-table-count-tab']/label[3]")).click();
         findDynamicElement(By.xpath("//table[@id=\"senderDashboard\"]/tbody/tr[1]"), 10000).click();
         //findDynamicElement(By.cssSelector("td.ng-binding > div.ng-binding")).click();
-        findDynamicElement(By.xpath("(//button[@type='button'])[65]")).click();
+
+        findDynamicElement(By.cssSelector(".rs-current-step > div.rs-timeline-content > div.rs-button-panel > button:nth-child(8)")).click();
+        //findDynamicElement(By.xpath("//button[text()='Invoice'][2]")).click();
         findDynamicElement(By.xpath("(//input[@type='text'])[3]")).clear();
         findDynamicElement(By.xpath("(//input[@type='text'])[3]")).sendKeys("98765432101");
         findDynamicElement(By.cssSelector("div.col-lg-10 > button.btn.my-btn-add")).click();
@@ -345,7 +351,7 @@ public class FirstAutomationTest {
 
 
     public WebElement findDynamicElement(By by) throws InterruptedException {
-        return this.findDynamicElement(by,10);
+        return this.findDynamicElement(by,6);
     }
 
 
