@@ -121,19 +121,28 @@ public class FirstAutomationTest {
         findVisibleElement(By.xpath("//input[@ng-model='theReferal.newReceiverCompany']")).sendKeys("Abacus");
 
         findDynamicElement(By.xpath("//div[text()='Refer']")).click();
-        Thread.sleep(1000);
-        driver.findElement(By.xpath("//input[@ng-model='isAgree']")).click();
+
+        /*Thread.sleep(3000);
+        driver.switchTo().activeElement();
+        Thread.sleep(3000);
+
+        driver.findElement(By.xpath("//input[@ng-model='isAgree']")).sendKeys(Keys.TAB);
+
+        ((JavascriptExecutor)driver).executeScript("arguments.checked = true;", driver.findElement(By.xpath("//input[@ng-model='isAgree']")));
+        WebElement     modal = (new WebDriverWait(driver,10)).until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//div[@class='modal-dialog modal-md']")));
+        */
+
+        findDynamicElement(By.xpath("//div[@class='modal-dialog modal-md']//div[@class='checkbox c-checkbox needsclick']")).click();
+        //driver.findElement(By.xpath("//input[@ng-model='isAgree']")).click();
         findDynamicElement(By.xpath("//button[@ng-disabled='!isAgree']")).click();
 
         //driver.findElement(By.xpath("//button[2]")).click();
-        findDynamicElement(By.cssSelector("button.confirm"),10000).click();
-        waitSweetAlertHide();
+        findDynamicElement(By.cssSelector("button.confirm")).click();
+        //waitSweetAlertHide();
         Thread.sleep(1000);
 
-
-
-        findDynamicElement(By.xpath("//li[@ui-sref='app-rs.profile.info']"),10).click();
-        findDynamicElement(By.xpath("//button[@ng-click='logout()']"),10).click();
+        findDynamicElement(By.xpath("//li[@ui-sref='app-rs.profile.info']")).click();
+        findDynamicElement(By.xpath("//button[@ng-click='logout()']")).click();
 
     }
 
